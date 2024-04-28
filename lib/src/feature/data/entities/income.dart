@@ -1,6 +1,5 @@
 import 'package:in_out_app/src/feature/data/entities/deal.dart';
-
-enum IncomeDealType { salary, other }
+import 'package:in_out_app/src/feature/data/handbooks/income_deal_type.dart';
 
 class IncomeDeal extends Deal {
   final IncomeDealType incomeType;

@@ -2,6 +2,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:in_out_app/src/feature/data/entities/expenses.dart';
 
 import 'package:in_out_app/src/feature/data/entities/income.dart';
+import 'package:in_out_app/src/feature/data/handbooks/expenses_deal_type.dart';
+import 'package:in_out_app/src/feature/data/handbooks/income_deal_type.dart';
 import 'package:in_out_app/src/feature/home/bloc/main_event.dart';
 import 'package:in_out_app/src/feature/home/bloc/main_state.dart';
 
@@ -39,6 +41,8 @@ class MainBloc extends Bloc<MainEvent, MainState> {
 
       final expensesAmount =
           deals.whereType<ExpensesDeal>().map((e) => e.amount).toList().reduce((value, element) => value + element);
+
+// TODO: заполнение
 
       emit(
         SuccessMainState(
