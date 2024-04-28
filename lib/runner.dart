@@ -1,8 +1,14 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:in_out_app/src/feature/home/bloc/main_bloc.dart';
+import 'package:in_out_app/src/feature/home/bloc/main_event.dart';
+import 'package:in_out_app/src/feature/home/bloc/main_state.dart';
 import 'package:in_out_app/src/feature/home/ui/home_page.dart';
 import 'package:in_out_app/src/feature/statistics/ui/statistics_page.dart';
 import 'package:in_out_app/src/feature/transactions/ui/transactions_page.dart';
-import 'package:in_out_app/src/shared/bottom_nav_bar/bottom_nav_bar.dart';
+import 'package:in_out_app/src/shared/errors/main_app_error_page/main_error_page.dart';
+import 'package:in_out_app/src/shared/loading.dart';
+import 'package:in_out_app/src/shared/scope/app_scope.dart';
 
 class InOutApp extends StatelessWidget {
   const InOutApp({super.key});
@@ -14,11 +20,24 @@ class InOutApp extends StatelessWidget {
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
         useMaterial3: true,
       ),
-      home: const BottomNavBar(child: [
-        HomePage(),
-        TransactionsPage(),
-        StatisticsPage(),
-      ]),
+      home: BlocProvider(
+        create: (context) => MainBloc()..add(InitialMainEvent()),
+        child: BlocBuilder<MainBloc, MainState>(
+          builder: (context, state) {
+            return switch (state) {
+              LoadingMainState() => const Loading(),
+              SuccessMainState() => AppScope(
+                  child: [
+                    HomePage(deals: state.deals),
+                    const TransactionsPage(),
+                    const StatisticsPage(),
+                  ],
+                ),
+              ErrorMainState() => const MainErrorPage(),
+            };
+          },
+        ),
+      ),
     );
   }
 }

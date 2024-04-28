@@ -1,15 +1,15 @@
 import 'package:flutter/material.dart';
 
-class BottomNavBar extends StatefulWidget {
+class AppScope extends StatefulWidget {
   final List<Widget> child;
 
-  const BottomNavBar({super.key, required this.child});
+  const AppScope({required this.child, super.key});
 
   @override
-  State<BottomNavBar> createState() => _BottomNavBarState();
+  State<AppScope> createState() => _AppScopeState();
 }
 
-class _BottomNavBarState extends State<BottomNavBar> {
+class _AppScopeState extends State<AppScope> {
   int _selectedIndex = 0;
 
   void _onItemTapped(int index) => setState(() => _selectedIndex = index);
