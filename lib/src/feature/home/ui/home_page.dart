@@ -3,8 +3,15 @@ import 'package:in_out_app/src/feature/data/entities/deal.dart';
 
 class HomePage extends StatelessWidget {
   final List<Deal> deals;
+  final int? incomeAmount;
+  final int? expensesAmount;
 
-  const HomePage({required this.deals, super.key});
+  const HomePage({
+    required this.deals,
+    super.key,
+    this.incomeAmount,
+    this.expensesAmount,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -28,7 +35,7 @@ class HomePage extends StatelessWidget {
                     ),
                   ),
                   Text(
-                    deals.first.amount.toString(),
+                    '${incomeAmount ?? 0}',
                     style: TextStyle(
                       fontSize: 48,
                       color: Theme.of(context).colorScheme.background,

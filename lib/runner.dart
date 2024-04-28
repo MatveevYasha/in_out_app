@@ -28,8 +28,12 @@ class InOutApp extends StatelessWidget {
               LoadingMainState() => const Loading(),
               SuccessMainState() => AppScope(
                   child: [
-                    HomePage(deals: state.deals),
-                    const TransactionsPage(),
+                    HomePage(
+                      deals: state.deals,
+                      incomeAmount: state.incomeAmount,
+                      expensesAmount: state.expensesAmount,
+                    ),
+                    TransactionsPage(deals: state.deals),
                     const StatisticsPage(),
                   ],
                 ),
