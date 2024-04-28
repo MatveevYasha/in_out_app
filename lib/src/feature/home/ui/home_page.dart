@@ -3,14 +3,14 @@ import 'package:in_out_app/src/feature/data/entities/deal.dart';
 
 class HomePage extends StatelessWidget {
   final List<Deal> deals;
-  final int? incomeAmount;
-  final int? expensesAmount;
+  final int incomeAmount;
+  final int expensesAmount;
 
   const HomePage({
     required this.deals,
+    required this.incomeAmount,
+    required this.expensesAmount,
     super.key,
-    this.incomeAmount,
-    this.expensesAmount,
   });
 
   @override
@@ -35,7 +35,7 @@ class HomePage extends StatelessWidget {
                     ),
                   ),
                   Text(
-                    '${incomeAmount ?? 0}',
+                    '$incomeAmount',
                     style: TextStyle(
                       fontSize: 48,
                       color: Theme.of(context).colorScheme.background,

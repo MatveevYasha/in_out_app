@@ -6,8 +6,8 @@ enum ExpensesDealType {
   entertainments,
   pharmacy;
 
-  static String toEntity() {
-    return switch (ExpensesDealType.values.first) {
+  static String toEntity(ExpensesDealType type) {
+    return switch (type) {
       ExpensesDealType.cafe => 'Кафе',
       ExpensesDealType.entertainments => 'Развлечения',
       ExpensesDealType.home => 'Для дома',

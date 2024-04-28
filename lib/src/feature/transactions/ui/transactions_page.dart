@@ -29,8 +29,8 @@ class TransactionsPage extends StatelessWidget {
         final deal = deals[index];
 
         final (textColor, arithmetic, title) = switch (deal) {
-          IncomeDeal _ => (Colors.green, '+', IncomeDealType.toEntity()),
-          ExpensesDeal _ => (Colors.red, '-', ExpensesDealType.toEntity()),
+          IncomeDeal _ => (Colors.green, '+', IncomeDealType.toEntity(deal.incomeType)),
+          ExpensesDeal _ => (Colors.red, '-', ExpensesDealType.toEntity(deal.incomeType)),
           _ => (Colors.grey, '', ''),
         };
 

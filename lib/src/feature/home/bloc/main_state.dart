@@ -8,10 +8,10 @@ class LoadingMainState extends MainState {
 
 class SuccessMainState extends MainState {
   final List<Deal> deals;
-  final int? incomeAmount;
-  final int? expensesAmount;
+  final int incomeAmount;
+  final int expensesAmount;
 
-  SuccessMainState({required this.deals, this.incomeAmount, this.expensesAmount});
+  SuccessMainState({required this.deals, this.incomeAmount = 0, this.expensesAmount = 0});
 }
 
 class ErrorMainState extends MainState {

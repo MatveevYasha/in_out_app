@@ -34,7 +34,11 @@ class InOutApp extends StatelessWidget {
                       expensesAmount: state.expensesAmount,
                     ),
                     TransactionsPage(deals: state.deals),
-                    const StatisticsPage(),
+                    StatisticsPage(
+                      deals: state.deals,
+                      incomeAmount: state.incomeAmount,
+                      expensesAmount: state.expensesAmount,
+                    ),
                   ],
                 ),
               ErrorMainState() => const MainErrorPage(),
