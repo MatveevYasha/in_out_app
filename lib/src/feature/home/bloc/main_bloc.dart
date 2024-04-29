@@ -21,7 +21,7 @@ class MainBloc extends Bloc<MainEvent, MainState> {
     on<MainEvent>(
       (event, emit) => switch (event) {
         final InitialMainEvent event => _initial(event, emit),
-        final AddDeal event => _addDeal(event, emit),
+        final AddDealEvent event => _addDeal(event, emit),
       },
     );
   }
@@ -32,6 +32,8 @@ class MainBloc extends Bloc<MainEvent, MainState> {
 
 // TODO: utc
 
+// TODO: sort
+
       _mockDeals.sort((a, b) => b.date.compareTo(a.date));
 
       final deals = _mockDeals.where((item) => item.date.year >= DateTime.now().year).toList();
@@ -41,8 +43,6 @@ class MainBloc extends Bloc<MainEvent, MainState> {
 
       final expensesAmount =
           deals.whereType<ExpensesDeal>().map((e) => e.amount).toList().reduce((value, element) => value + element);
-
-// TODO: заполнение
 
       emit(
         SuccessMainState(
@@ -56,5 +56,27 @@ class MainBloc extends Bloc<MainEvent, MainState> {
     }
   }
 
-  void _addDeal(AddDeal event, Emitter<MainState> emit) {}
+  void _addDeal(AddDealEvent event, Emitter<MainState> emit) {
+    _mockDeals.add(IncomeDeal(amount: event.amount, date: event.date.toUtc(), incomeType: event.incomeDeal!));
+
+    _mockDeals.sort((a, b) => a.date.compareTo(b.date));
+
+    final deals = _mockDeals.where((item) => item.date.year >= DateTime.now().year).toList();
+
+    final incomeAmount =
+        deals.whereType<IncomeDeal>().map((e) => e.amount).toList().reduce((value, element) => value + element);
+
+    final expensesAmount =
+        deals.whereType<ExpensesDeal>().map((e) => e.amount).toList().reduce((value, element) => value + element);
+
+// TODO: заполнение
+
+    emit(
+      SuccessMainState(
+        deals: deals,
+        incomeAmount: incomeAmount,
+        expensesAmount: expensesAmount,
+      ),
+    );
+  }
 }

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:in_out_app/src/feature/home/bloc/main_bloc.dart';
 import 'package:in_out_app/src/feature/home/bloc/main_event.dart';
 import 'package:in_out_app/src/feature/home/bloc/main_state.dart';
@@ -15,14 +16,20 @@ class InOutApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
-        useMaterial3: true,
-      ),
-      home: BlocProvider(
-        create: (context) => MainBloc()..add(InitialMainEvent()),
-        child: BlocBuilder<MainBloc, MainState>(
+    return BlocProvider(
+      create: (context) => MainBloc()..add(InitialMainEvent()),
+      child: MaterialApp(
+        theme: ThemeData(
+          colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
+          useMaterial3: true,
+        ),
+        localizationsDelegates: const [
+          GlobalMaterialLocalizations.delegate,
+          GlobalWidgetsLocalizations.delegate,
+          GlobalCupertinoLocalizations.delegate,
+        ],
+        supportedLocales: const [Locale('ru')],
+        home: BlocBuilder<MainBloc, MainState>(
           builder: (context, state) {
             return switch (state) {
               LoadingMainState() => const Loading(),
