@@ -1,4 +1,5 @@
 import 'package:core/core.dart';
+import 'package:database/database.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import 'package:in_out_app/src/feature/home/bloc/main_event.dart';
@@ -57,6 +58,10 @@ class MainBloc extends Bloc<MainEvent, MainState> {
     _mockDeals.add(IncomeDeal(amount: event.amount, date: event.date.toUtc(), incomeType: event.incomeDeal!));
 
     _mockDeals.sort((a, b) => a.date.compareTo(b.date));
+
+    final db = Database();
+
+    final foo = db.allExpensesDealData;
 
     final deals = _mockDeals.where((item) => item.date.year >= DateTime.now().year).toList();
 
