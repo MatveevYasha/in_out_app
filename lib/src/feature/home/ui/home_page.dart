@@ -1,9 +1,6 @@
+import 'package:core/core.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:in_out_app/src/feature/data/entities/deal.dart';
-import 'package:in_out_app/src/feature/data/handbooks/expenses_deal_type.dart';
-import 'package:in_out_app/src/feature/data/handbooks/income_deal_type.dart';
 import 'package:in_out_app/src/feature/home/bloc/main_bloc.dart';
 import 'package:in_out_app/src/feature/home/bloc/main_event.dart';
 import 'package:intl/intl.dart';

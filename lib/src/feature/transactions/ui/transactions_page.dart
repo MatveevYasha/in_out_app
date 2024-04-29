@@ -1,9 +1,5 @@
+import 'package:core/core.dart';
 import 'package:flutter/material.dart';
-import 'package:in_out_app/src/feature/data/entities/deal.dart';
-import 'package:in_out_app/src/feature/data/entities/expenses.dart';
-import 'package:in_out_app/src/feature/data/entities/income.dart';
-import 'package:in_out_app/src/feature/data/handbooks/expenses_deal_type.dart';
-import 'package:in_out_app/src/feature/data/handbooks/income_deal_type.dart';
 import 'package:in_out_app/src/shared/helpers/string_extension.dart';
 import 'package:intl/intl.dart';
 

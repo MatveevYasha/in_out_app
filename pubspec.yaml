@@ -10,6 +10,13 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
+
+  # Modules
+  core:
+    path: packages/core
+  database:
+    path: packages/database
+
   # state_manager
   flutter_bloc: 8.1.5
   # localization

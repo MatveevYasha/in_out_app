@@ -1,4 +1,4 @@
-import 'package:in_out_app/src/feature/data/entities/deal.dart';
+import 'package:core/core.dart';
 
 sealed class MainState {}
 
