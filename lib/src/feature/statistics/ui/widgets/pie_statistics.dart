@@ -27,7 +27,7 @@ class PieStatistics extends StatelessWidget {
 
     return PieChart(
       dataMap: dealsMap,
-      chartRadius: MediaQuery.sizeOf(context).height * 0.25,
+      chartRadius: MediaQuery.sizeOf(context).height * 0.2,
     );
   }
 }

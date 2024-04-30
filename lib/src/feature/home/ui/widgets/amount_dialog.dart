@@ -3,14 +3,23 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:in_out_app/src/feature/home/bloc/main_bloc.dart';
 import 'package:in_out_app/src/feature/home/bloc/main_event.dart';
+import 'package:in_out_app/src/feature/home/ui/widgets/amout_text_field_with_buttons.dart';
+import 'package:in_out_app/src/feature/home/ui/widgets/close_category_button.dart';
 import 'package:intl/intl.dart';
 
 GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
 class AmountDialog extends StatefulWidget {
+  final bool categoryIsIncome;
   final IncomeDealType? incomeCategory;
+  final ExpensesDealType? expenseCategory;
 
-  const AmountDialog({this.incomeCategory, super.key});
+  const AmountDialog({
+    required this.categoryIsIncome,
+    this.incomeCategory,
+    this.expenseCategory,
+    super.key,
+  });
 
   @override
   State<AmountDialog> createState() => _AmountDialogState();
@@ -18,7 +27,6 @@ class AmountDialog extends StatefulWidget {
 
 class _AmountDialogState extends State<AmountDialog> {
   final _controller = TextEditingController();
-
   DateTime selectedDate = DateTime.now();
 
   Future<void> _selectDate(BuildContext context) async {
@@ -48,77 +56,9 @@ class _AmountDialogState extends State<AmountDialog> {
       content: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
-          Row(
-            children: [
-              Padding(
-                padding: const EdgeInsets.only(right: 4),
-                child: IconButton(
-                  onPressed: () {
-                    if (_controller.text.isNotEmpty && _controller.text.contains(RegExp(r'\d'))) {
-                      int inv = int.parse(_controller.text);
-                      setState(() {
-                        if (inv > 0) {
-                          inv = inv - 1;
-                          _controller.text = '$inv';
-                        }
-                      });
-                    }
-                  },
-                  icon: const Icon(
-                    Icons.remove_circle_outline,
-                    color: Colors.black,
-                  ),
-                ),
-              ),
-              Expanded(
-                child: Form(
-                  key: _formKey,
-                  child: TextFormField(
-                    textAlign: TextAlign.center,
-                    validator: (value) {
-                      if (value == null || value.isEmpty) {
-                        return 'Введите сумму';
-                      }
-                      if (value.contains(RegExp(r'\D'))) {
-                        return 'Введите целое число';
-                      }
-
-                      return null;
-                    },
-                    controller: _controller,
-                    keyboardType: TextInputType.number,
-                    enabled: true,
-                    style: const TextStyle(
-                      fontWeight: FontWeight.bold,
-                      fontSize: 16,
-                    ),
-                    decoration: const InputDecoration(
-                      border: OutlineInputBorder(),
-                    ),
-                  ),
-                ),
-              ),
-              Padding(
-                padding: const EdgeInsets.only(left: 4),
-                child: IconButton(
-                  onPressed: () {
-                    if (_controller.text.isNotEmpty && _controller.text.contains(RegExp(r'\d'))) {
-                      int inv = int.parse(_controller.text);
-                      setState(() {
-                        inv = inv + 1;
-                        _controller.text = '$inv';
-                      });
-                    } else {
-                      _controller.text = '1';
-                    }
-                  },
-                  icon: const Icon(
-                    Icons.add_circle_outline,
-                    color: Colors.black,
-                  ),
-                ),
-              ),
-            ],
+          AmoutTextFieldWithButtons(
+            controller: _controller,
+            formKey: _formKey,
           ),
           const SizedBox(height: 12),
           Row(
@@ -130,39 +70,51 @@ class _AmountDialogState extends State<AmountDialog> {
               ),
             ],
           ),
+          if (selectedDate.compareTo(DateTime.now()) > 0)
+            const Text(
+              'Вы ввели дату из будущего, вы уверены?',
+              style: TextStyle(color: Colors.red),
+            ),
         ],
       ),
       actions: [
-        TextButton(
-          style: TextButton.styleFrom(
-            textStyle: Theme.of(context).textTheme.labelLarge,
-          ),
-          child: const Text('Закрыть'),
-          onPressed: () {
-            Navigator.of(context).pop();
-          },
-        ),
+        const CloseCategoryButton(),
         TextButton(
           style: TextButton.styleFrom(
             textStyle: Theme.of(context).textTheme.labelLarge,
           ),
           child: const Text('Записать'),
-          onPressed: () {
-            if (_formKey.currentState!.validate()) {
-              bloc.add(
-                AddDealEvent(
-                  incomeDeal: widget.incomeCategory,
-                  expensesDeal: null,
-                  amount: int.parse(_controller.text),
-                  date: selectedDate,
-                ),
-              );
-              _controller.clear();
-              Navigator.of(context).pop();
-            }
-          },
+          onPressed: () => _recordTransaction(bloc, context),
         ),
       ],
     );
+  }
+
+  void _recordTransaction(MainBloc bloc, BuildContext context) {
+    if (_formKey.currentState!.validate()) {
+      if (widget.categoryIsIncome) {
+        bloc.add(
+          AddDealEvent(
+            incomeDeal: widget.incomeCategory,
+            expensesDeal: null,
+            amount: int.parse(_controller.text),
+            date: selectedDate,
+          ),
+        );
+      }
+      if (!widget.categoryIsIncome) {
+        bloc.add(
+          AddDealEvent(
+            incomeDeal: null,
+            expensesDeal: widget.expenseCategory,
+            amount: int.parse(_controller.text),
+            date: selectedDate,
+          ),
+        );
+      }
+
+      _controller.clear();
+      Navigator.of(context).pop();
+    }
   }
 }

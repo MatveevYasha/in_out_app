@@ -41,7 +41,7 @@ class AddDealsCard extends StatelessWidget {
               children: [
                 const Spacer(),
                 IconButton(
-                  onPressed: () => _categoryDialog(context),
+                  onPressed: () => _categoryDialog(context, title: title),
                   icon: Icon(
                     Icons.add_circle_outline_sharp,
                     color: Colors.white,
@@ -56,12 +56,10 @@ class AddDealsCard extends StatelessWidget {
     );
   }
 
-  Future<void> _categoryDialog(BuildContext context) {
+  Future<void> _categoryDialog(BuildContext context, {required String title}) {
     return showDialog<void>(
       context: context,
-      builder: (context) {
-        return const CategoryDialog();
-      },
+      builder: (context) => CategoryDialog(title: title),
     );
   }
 }

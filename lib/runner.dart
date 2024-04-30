@@ -33,7 +33,7 @@ class InOutApp extends StatelessWidget {
       )..add(InitialMainEvent()),
       child: MaterialApp(
         theme: ThemeData(
-          colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
+          colorScheme: ColorScheme.fromSeed(seedColor: Colors.grey),
           useMaterial3: true,
         ),
         localizationsDelegates: const [

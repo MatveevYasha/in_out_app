@@ -18,7 +18,8 @@ class _AppScopeState extends State<AppScope> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Theme.of(context).colorScheme.inversePrimary,
+        backgroundColor: Colors.grey[300],
+        title: const Text('Бюджетный трекер - test_app'),
       ),
       body: widget.child[_selectedIndex],
       bottomNavigationBar: BottomNavigationBar(
@@ -37,7 +38,7 @@ class _AppScopeState extends State<AppScope> {
           ),
         ],
         currentIndex: _selectedIndex,
-        selectedItemColor: Colors.blueGrey,
+        selectedItemColor: Colors.green,
         onTap: _onItemTapped,
       ),
     );

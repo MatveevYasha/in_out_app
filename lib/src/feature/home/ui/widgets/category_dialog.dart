@@ -1,9 +1,12 @@
 import 'package:core/core.dart';
 import 'package:flutter/material.dart';
 import 'package:in_out_app/src/feature/home/ui/widgets/amount_dialog.dart';
+import 'package:in_out_app/src/feature/home/ui/widgets/close_category_button.dart';
 
 class CategoryDialog extends StatefulWidget {
-  const CategoryDialog({super.key});
+  final String title;
+
+  const CategoryDialog({required this.title, super.key});
 
   @override
   State<CategoryDialog> createState() => _CategoryDialogState();
@@ -11,38 +14,48 @@ class CategoryDialog extends StatefulWidget {
 
 class _CategoryDialogState extends State<CategoryDialog> {
   IncomeDealType? incomeCategory = IncomeDealType.salary;
+  ExpensesDealType? expenseCategory = ExpensesDealType.supermarkets;
 
   @override
   Widget build(BuildContext context) {
+    final categoryIsIncome = widget.title == 'Доходы';
+
     return AlertDialog(
       title: const Text('Выберете категорию'),
       content: Column(
         mainAxisSize: MainAxisSize.min,
-        children: IncomeDealType.values
-            .map(
-              (e) => RadioListTile<IncomeDealType>(
-                title: Text(IncomeDealType.toEntity(e)),
-                value: e,
-                groupValue: incomeCategory,
-                onChanged: (value) {
-                  setState(() {
-                    incomeCategory = value;
-                  });
-                },
-              ),
-            )
-            .toList(),
+        children: categoryIsIncome
+            ? IncomeDealType.values
+                .map(
+                  (e) => RadioListTile<IncomeDealType>(
+                    title: Text(IncomeDealType.toEntity(e)),
+                    value: e,
+                    groupValue: incomeCategory,
+                    onChanged: (value) {
+                      setState(() {
+                        incomeCategory = value;
+                      });
+                    },
+                  ),
+                )
+                .toList()
+            : ExpensesDealType.values
+                .map(
+                  (e) => RadioListTile<ExpensesDealType>(
+                    title: Text(ExpensesDealType.toEntity(e)),
+                    value: e,
+                    groupValue: expenseCategory,
+                    onChanged: (value) {
+                      setState(() {
+                        expenseCategory = value;
+                      });
+                    },
+                  ),
+                )
+                .toList(),
       ),
-      actions: <Widget>[
-        TextButton(
-          style: TextButton.styleFrom(
-            textStyle: Theme.of(context).textTheme.labelLarge,
-          ),
-          child: const Text('Закрыть'),
-          onPressed: () {
-            Navigator.of(context).pop();
-          },
-        ),
+      actions: [
+        const CloseCategoryButton(),
         TextButton(
           style: TextButton.styleFrom(
             textStyle: Theme.of(context).textTheme.labelLarge,
@@ -50,18 +63,38 @@ class _CategoryDialogState extends State<CategoryDialog> {
           child: const Text('Далее'),
           onPressed: () {
             Navigator.of(context).pop();
-            _amountDialog(context, incomeCategory);
+            _amountDialog(
+              context,
+              categoryIsIncome: categoryIsIncome,
+              incomeCategory: incomeCategory,
+              expenseCategory: expenseCategory,
+            );
           },
         ),
       ],
     );
   }
 
-  Future<void> _amountDialog(BuildContext context, IncomeDealType? incomeCategory) {
+  Future<void> _amountDialog(
+    BuildContext context, {
+    required bool categoryIsIncome,
+    required IncomeDealType? incomeCategory,
+    required ExpensesDealType? expenseCategory,
+  }) {
     return showDialog<void>(
       context: context,
       builder: (context) {
-        return AmountDialog(incomeCategory: incomeCategory);
+        if (categoryIsIncome) {
+          return AmountDialog(
+            incomeCategory: incomeCategory,
+            categoryIsIncome: categoryIsIncome,
+          );
+        }
+
+        return AmountDialog(
+          expenseCategory: expenseCategory,
+          categoryIsIncome: categoryIsIncome,
+        );
       },
     );
   }
