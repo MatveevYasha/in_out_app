@@ -77,7 +77,13 @@ class Database extends _$Database {
 
   //   return itemsQuery.get();
   // }
-  Future<List<DBExpensesDealData>> get allExpensesDealData => select(dBExpensesDeal).get();
+  Future<List<ExpensesDeal>> getAllExpensesDealData() async {
+    final query = select(dBExpensesDeal);
+    // ..whereSamePrimaryKey()
+    // ..where((tbl) => tbl.isDeleted.equals(false));
+
+    return query.map((row) => row.toEntity()).get();
+  }
 }
 
 

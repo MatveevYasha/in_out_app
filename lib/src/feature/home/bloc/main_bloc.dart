@@ -15,7 +15,11 @@ final _mockDeals = [
 ];
 
 class MainBloc extends Bloc<MainEvent, MainState> {
-  MainBloc() : super(LoadingMainState()) {
+  final DBRepository _repository;
+
+  MainBloc({required DBRepository repository})
+      : _repository = repository,
+        super(LoadingMainState()) {
     on<MainEvent>(
       (event, emit) => switch (event) {
         final InitialMainEvent event => _initial(event, emit),
@@ -59,9 +63,15 @@ class MainBloc extends Bloc<MainEvent, MainState> {
 
     _mockDeals.sort((a, b) => a.date.compareTo(b.date));
 
-    final db = Database();
+    final foo = _repository.saveExpensesDeal(
+      ExpensesDeal(
+        amount: event.amount,
+        date: event.date.toUtc(),
+        incomeType: ExpensesDealType.cafe,
+      ),
+    );
 
-    final foo = db.allExpensesDealData;
+    final baz = _repository.getExpensesDeals();
 
     final deals = _mockDeals.where((item) => item.date.year >= DateTime.now().year).toList();
 
