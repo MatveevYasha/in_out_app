@@ -1,11 +1,10 @@
 import 'package:core/core.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:hive_flutter/hive_flutter.dart';
+import 'package:in_out_app/src/feature/bloc/main_event.dart';
+import 'package:in_out_app/src/feature/bloc/main_state.dart';
 import 'package:in_out_app/src/feature/data/database/expenses_deal_db.dart';
 import 'package:in_out_app/src/feature/data/database/incomes_deal_db.dart';
-
-import 'package:in_out_app/src/feature/home/bloc/main_event.dart';
-import 'package:in_out_app/src/feature/home/bloc/main_state.dart';
 
 class MainBloc extends Bloc<MainEvent, MainState> {
   final Box<ExpensesDealDB> expensesDealBox;
