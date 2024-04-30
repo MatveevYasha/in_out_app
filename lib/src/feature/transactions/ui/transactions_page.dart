@@ -1,7 +1,8 @@
 import 'package:core/core.dart';
 import 'package:flutter/material.dart';
-import 'package:in_out_app/src/shared/helpers/string_extension.dart';
-import 'package:intl/intl.dart';
+import 'package:in_out_app/src/feature/transactions/ui/widgets/empty_transactions_page.dart';
+import 'package:in_out_app/src/feature/transactions/ui/widgets/transaction_card.dart';
+import 'package:in_out_app/src/feature/transactions/ui/widgets/transaction_month_title.dart';
 
 class TransactionsPage extends StatelessWidget {
   final List<Deal> deals;
@@ -10,15 +11,7 @@ class TransactionsPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    if (deals.isEmpty) {
-      return const Center(
-        child: Text(
-          'Список транзакций пуст, необходимо добавить покупку или доход на передыдущем экране.',
-          style: TextStyle(fontSize: 21),
-          textAlign: TextAlign.center,
-        ),
-      );
-    }
+    if (deals.isEmpty) return const EmptyTransactionsPage();
 
     return ListView.separated(
       itemBuilder: (context, index) {
@@ -35,49 +28,14 @@ class TransactionsPage extends StatelessWidget {
             if (index == 0 ||
                 (deals[index].date.day != deals[index - 1].date.day ||
                     deals[index].date.month != deals[index - 1].date.month))
-              Padding(
-                padding: const EdgeInsets.symmetric(vertical: 12),
-                child: Text(
-                  DateFormat.MMMMEEEEd('ru').format(deal.date).capitalize(),
-                  style: const TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
-                ),
-              ),
+              TransactionMonthTitle(deal: deal),
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 12),
-              child: Row(
-                children: [
-                  Expanded(
-                    child: Text(
-                      '$arithmetic ${deal.amount}',
-                      style: TextStyle(
-                        color: textColor,
-                        fontSize: 24,
-                        fontWeight: FontWeight.w600,
-                      ),
-                    ),
-                  ),
-                  const SizedBox(width: 12),
-                  Expanded(
-                    flex: 3,
-                    child: Text(
-                      title,
-                      overflow: TextOverflow.ellipsis,
-                      style: TextStyle(
-                        color: textColor,
-                        fontSize: 24,
-                      ),
-                    ),
-                  ),
-                  Expanded(
-                    child: Text(
-                      DateFormat.Hm().format(deal.date.toLocal()),
-                      style: const TextStyle(
-                        color: Colors.grey,
-                        fontSize: 24,
-                      ),
-                    ),
-                  ),
-                ],
+              child: TransactionCard(
+                arithmetic: arithmetic,
+                deal: deal,
+                textColor: textColor,
+                title: title,
               ),
             ),
           ],

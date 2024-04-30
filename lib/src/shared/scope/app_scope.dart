@@ -24,16 +24,16 @@ class _AppScopeState extends State<AppScope> {
       bottomNavigationBar: BottomNavigationBar(
         items: const <BottomNavigationBarItem>[
           BottomNavigationBarItem(
-            icon: Icon(Icons.wordpress),
-            label: 'Home',
+            icon: Icon(Icons.add_card_rounded),
+            label: 'Главная',
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.list_sharp),
-            label: 'List',
+            label: 'Список',
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.list_sharp),
-            label: 'Stats',
+            icon: Icon(Icons.pie_chart),
+            label: 'Статистика',
           ),
         ],
         currentIndex: _selectedIndex,

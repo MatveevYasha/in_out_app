@@ -1,10 +1,9 @@
-import 'package:core/core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:hive_flutter/hive_flutter.dart';
-import 'package:in_out_app/src/feature/data/hive/expenses_deal_db.dart';
-import 'package:in_out_app/src/feature/data/hive/incomes_deal_db.dart';
+import 'package:in_out_app/src/feature/data/database/expenses_deal_db.dart';
+import 'package:in_out_app/src/feature/data/database/incomes_deal_db.dart';
 import 'package:in_out_app/src/feature/home/bloc/main_bloc.dart';
 import 'package:in_out_app/src/feature/home/bloc/main_event.dart';
 import 'package:in_out_app/src/feature/home/bloc/main_state.dart';

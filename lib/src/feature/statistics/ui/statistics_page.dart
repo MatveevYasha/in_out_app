@@ -1,6 +1,8 @@
 import 'package:core/core.dart';
 import 'package:flutter/material.dart';
-import 'package:pie_chart/pie_chart.dart';
+import 'package:in_out_app/src/feature/statistics/ui/widgets/linear_statistics.dart';
+import 'package:in_out_app/src/feature/statistics/ui/widgets/pie_statistics.dart';
+import 'package:in_out_app/src/feature/statistics/ui/widgets/statistics_error_empty.dart';
 
 class StatisticsPage extends StatelessWidget {
   final List<Deal> deals;
@@ -58,18 +60,7 @@ class StatisticsPage extends StatelessWidget {
       incomeAmountWidth = incomeAmount / expensesAmount;
     }
 
-    if (deals.isEmpty) {
-      return const Center(
-        child: Padding(
-          padding: EdgeInsets.symmetric(horizontal: 12),
-          child: Text(
-            'Список транзакций пуст, статистика пока не доступна',
-            style: TextStyle(fontSize: 21),
-            textAlign: TextAlign.center,
-          ),
-        ),
-      );
-    }
+    if (deals.isEmpty) return const StatisticsErrorEmpty();
 
     return Padding(
       padding: const EdgeInsets.only(left: 12),
@@ -82,38 +73,14 @@ class StatisticsPage extends StatelessWidget {
               fontSize: 24,
             ),
           ),
-          (incomeDealsMap.isEmpty)
-              ? const Expanded(
-                  child: Center(
-                    child: Text(
-                      'Статистика по доходам не доступна',
-                      textAlign: TextAlign.center,
-                      style: TextStyle(fontSize: 24, color: Colors.grey),
-                    ),
-                  ),
-                )
-              : PieChart(
-                  dataMap: incomeDealsMap,
-                  chartRadius: MediaQuery.sizeOf(context).height * 0.25,
-                ),
-          const Text(
-            'Доходы всего:',
-            style: TextStyle(
-              fontSize: 24,
-            ),
+          PieStatistics(
+            title: 'доход',
+            dealsMap: incomeDealsMap,
           ),
-          DecoratedBox(
-            decoration: const BoxDecoration(color: Colors.green),
-            child: SizedBox(
-              width: MediaQuery.sizeOf(context).width * incomeAmountWidth,
-              child: Padding(
-                padding: const EdgeInsets.only(left: 12),
-                child: Text(
-                  '$incomeAmount',
-                  style: const TextStyle(color: Colors.white),
-                ),
-              ),
-            ),
+          LinearStatistics(
+            title: 'Доходы',
+            amountWidth: incomeAmountWidth,
+            amount: incomeAmount,
           ),
           const SizedBox(height: 18),
           const Text(
@@ -122,38 +89,14 @@ class StatisticsPage extends StatelessWidget {
               fontSize: 24,
             ),
           ),
-          (expensesDealsMap.isEmpty)
-              ? const Expanded(
-                  child: Center(
-                    child: Text(
-                      'Статистика по расходам не доступна',
-                      textAlign: TextAlign.center,
-                      style: TextStyle(fontSize: 24, color: Colors.grey),
-                    ),
-                  ),
-                )
-              : PieChart(
-                  dataMap: expensesDealsMap,
-                  chartRadius: MediaQuery.sizeOf(context).height * 0.25,
-                ),
-          const Text(
-            'Расходы всего:',
-            style: TextStyle(
-              fontSize: 24,
-            ),
+          PieStatistics(
+            title: 'расход',
+            dealsMap: expensesDealsMap,
           ),
-          DecoratedBox(
-            decoration: const BoxDecoration(color: Colors.green),
-            child: SizedBox(
-              width: MediaQuery.sizeOf(context).width * expensesAmountWidth,
-              child: Padding(
-                padding: const EdgeInsets.only(left: 12),
-                child: Text(
-                  '$expensesAmount',
-                  style: const TextStyle(color: Colors.white),
-                ),
-              ),
-            ),
+          LinearStatistics(
+            title: 'Расходы',
+            amountWidth: expensesAmountWidth,
+            amount: expensesAmount,
           ),
         ],
       ),

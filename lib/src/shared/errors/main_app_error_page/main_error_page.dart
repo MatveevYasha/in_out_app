@@ -5,6 +5,6 @@ class MainErrorPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const Text('Произошла ошибка');
+    return const Material(child: Center(child: Text('Произошла ошибка')));
   }
 }
