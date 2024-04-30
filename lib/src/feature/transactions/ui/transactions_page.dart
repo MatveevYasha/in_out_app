@@ -70,7 +70,7 @@ class TransactionsPage extends StatelessWidget {
                   ),
                   Expanded(
                     child: Text(
-                      DateFormat.Hm().format(deal.date),
+                      DateFormat.Hm().format(deal.date.toLocal()),
                       style: const TextStyle(
                         color: Colors.grey,
                         fontSize: 24,

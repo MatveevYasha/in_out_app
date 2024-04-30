@@ -1,8 +1,10 @@
-import 'package:database/database.dart';
+import 'package:core/core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
-import 'package:in_out_app/src/feature/data/repository/db_repository_imp.dart';
+import 'package:hive_flutter/hive_flutter.dart';
+import 'package:in_out_app/src/feature/data/hive/expenses_deal_db.dart';
+import 'package:in_out_app/src/feature/data/hive/incomes_deal_db.dart';
 import 'package:in_out_app/src/feature/home/bloc/main_bloc.dart';
 import 'package:in_out_app/src/feature/home/bloc/main_event.dart';
 import 'package:in_out_app/src/feature/home/bloc/main_state.dart';
@@ -13,16 +15,23 @@ import 'package:in_out_app/src/shared/errors/main_app_error_page/main_error_page
 import 'package:in_out_app/src/shared/loading.dart';
 import 'package:in_out_app/src/shared/scope/app_scope.dart';
 
-final _db = Database();
-
 class InOutApp extends StatelessWidget {
-  const InOutApp({super.key});
+  final Box<ExpensesDealDB> expensesDealBox;
+  final Box<IncomesDealDB> incomesDealBox;
+
+  const InOutApp({
+    required this.expensesDealBox,
+    required this.incomesDealBox,
+    super.key,
+  });
 
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (context) =>
-          MainBloc(repository: DBRepositoryImpl(provider: DataBaseDataProvider(_db)))..add(InitialMainEvent()),
+      create: (context) => MainBloc(
+        expensesDealBox: expensesDealBox,
+        incomesDealBox: incomesDealBox,
+      )..add(InitialMainEvent()),
       child: MaterialApp(
         theme: ThemeData(
           colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),

@@ -1,6 +1,8 @@
 import 'package:core/core.dart';
-import 'package:database/database.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:hive_flutter/hive_flutter.dart';
+import 'package:in_out_app/src/feature/data/hive/expenses_deal_db.dart';
+import 'package:in_out_app/src/feature/data/hive/incomes_deal_db.dart';
 
 import 'package:in_out_app/src/feature/home/bloc/main_event.dart';
 import 'package:in_out_app/src/feature/home/bloc/main_state.dart';
@@ -15,11 +17,13 @@ final _mockDeals = [
 ];
 
 class MainBloc extends Bloc<MainEvent, MainState> {
-  final DBRepository _repository;
+  final Box<ExpensesDealDB> expensesDealBox;
+  final Box<IncomesDealDB> incomesDealBox;
 
-  MainBloc({required DBRepository repository})
-      : _repository = repository,
-        super(LoadingMainState()) {
+  MainBloc({
+    required this.expensesDealBox,
+    required this.incomesDealBox,
+  }) : super(LoadingMainState()) {
     on<MainEvent>(
       (event, emit) => switch (event) {
         final InitialMainEvent event => _initial(event, emit),
@@ -30,27 +34,14 @@ class MainBloc extends Bloc<MainEvent, MainState> {
 
   Future<void> _initial(InitialMainEvent event, Emitter<MainState> emit) async {
     try {
-      await Future<void>.delayed(const Duration(seconds: 1));
-
-// TODO: utc
-
-// TODO: sort
-
-      _mockDeals.sort((a, b) => b.date.compareTo(a.date));
-
-      final deals = _mockDeals.where((item) => item.date.year >= DateTime.now().year).toList();
-
-      final incomeAmount =
-          deals.whereType<IncomeDeal>().map((e) => e.amount).toList().reduce((value, element) => value + element);
-
-      final expensesAmount =
-          deals.whereType<ExpensesDeal>().map((e) => e.amount).toList().reduce((value, element) => value + element);
+      final List<Deal> finalDeals = _getDeals();
+      final totalAmount = _getTotalAmount(finalDeals);
 
       emit(
         SuccessMainState(
-          deals: deals,
-          incomeAmount: incomeAmount,
-          expensesAmount: expensesAmount,
+          deals: finalDeals,
+          incomeAmount: totalAmount.incomeAmount,
+          expensesAmount: totalAmount.expensesAmount,
         ),
       );
     } on Exception catch (_) {
@@ -58,37 +49,104 @@ class MainBloc extends Bloc<MainEvent, MainState> {
     }
   }
 
+  List<Deal> _getDeals() {
+    final List<ExpensesDeal> expensesDealList = [];
+    final List<IncomeDeal> incomesDealList = [];
+
+    for (final element in expensesDealBox.values) {
+      expensesDealList.add(
+        ExpensesDeal(
+          amount: element.amount,
+          date: element.date,
+          incomeType: ExpensesDealType.toEnum(element.incomeType),
+        ),
+      );
+    }
+
+    for (final element in incomesDealBox.values) {
+      incomesDealList.add(
+        IncomeDeal(
+          amount: element.amount,
+          date: element.date,
+          incomeType: IncomeDealType.toEnum(element.incomeType),
+        ),
+      );
+    }
+
+    final List<Deal> deals = [...expensesDealList, ...incomesDealList];
+
+    deals.sort((a, b) => b.date.compareTo(a.date));
+
+    return deals.where((item) => item.date.year >= DateTime.now().year).toList();
+  }
+
+  ({int incomeAmount, int expensesAmount}) _getTotalAmount(List<Deal> deals) {
+    int? incomeAmount;
+    int? expensesAmount;
+
+    for (final element in deals) {
+      if (element.runtimeType == IncomeDeal) {
+        if (incomeAmount != null) {
+          incomeAmount = incomeAmount + element.amount;
+        } else {
+          incomeAmount = element.amount;
+        }
+      }
+
+      if (element.runtimeType == ExpensesDeal) {
+        if (expensesAmount != null) {
+          expensesAmount = expensesAmount + element.amount;
+        } else {
+          expensesAmount = element.amount;
+        }
+      }
+    }
+
+    incomeAmount ??= 0;
+    expensesAmount ??= 0;
+
+    return (incomeAmount: incomeAmount, expensesAmount: expensesAmount);
+  }
+
   void _addDeal(AddDealEvent event, Emitter<MainState> emit) {
-    _mockDeals.add(IncomeDeal(amount: event.amount, date: event.date.toUtc(), incomeType: event.incomeDeal!));
+    try {
+      if (event.incomeDeal != null && event.expensesDeal != null) throw Exception();
 
-    _mockDeals.sort((a, b) => a.date.compareTo(b.date));
+      if (event.incomeDeal != null) {
+        incomesDealBox.put(
+          'key_${event.date}',
+          IncomesDealDB(
+            amount: event.amount,
+            date: event.date.toUtc(),
+            incomeType: IncomeDealType.toEntity(event.incomeDeal!),
+          ),
+        );
+      }
 
-    final foo = _repository.saveExpensesDeal(
-      ExpensesDeal(
-        amount: event.amount,
-        date: event.date.toUtc(),
-        incomeType: ExpensesDealType.cafe,
-      ),
-    );
+      if (event.expensesDeal != null) {
+        expensesDealBox.put(
+          'key_${event.date}',
+          ExpensesDealDB(
+            amount: event.amount,
+            date: event.date.toUtc(),
+            incomeType: ExpensesDealType.toEntity(event.expensesDeal!),
+          ),
+        );
+      }
 
-    final baz = _repository.getExpensesDeals();
+      final List<Deal> finalDeals = _getDeals();
 
-    final deals = _mockDeals.where((item) => item.date.year >= DateTime.now().year).toList();
+      final totalAmount = _getTotalAmount(finalDeals);
 
-    final incomeAmount =
-        deals.whereType<IncomeDeal>().map((e) => e.amount).toList().reduce((value, element) => value + element);
-
-    final expensesAmount =
-        deals.whereType<ExpensesDeal>().map((e) => e.amount).toList().reduce((value, element) => value + element);
-
-// TODO: заполнение
-
-    emit(
-      SuccessMainState(
-        deals: deals,
-        incomeAmount: incomeAmount,
-        expensesAmount: expensesAmount,
-      ),
-    );
+      emit(
+        SuccessMainState(
+          deals: finalDeals,
+          incomeAmount: totalAmount.incomeAmount,
+          expensesAmount: totalAmount.expensesAmount,
+        ),
+      );
+    } on Exception catch (_) {
+      emit(ErrorMainState());
+    }
   }
 }

@@ -8,7 +8,7 @@ class AddDealEvent extends MainEvent {
   final int amount;
   final DateTime date;
   final IncomeDealType? incomeDeal;
-  final ExpensesDeal? expensesDeal;
+  final ExpensesDealType? expensesDeal;
 
   AddDealEvent({
     required this.amount,

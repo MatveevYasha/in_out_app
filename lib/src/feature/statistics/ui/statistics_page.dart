@@ -58,6 +58,19 @@ class StatisticsPage extends StatelessWidget {
       incomeAmountWidth = incomeAmount / expensesAmount;
     }
 
+    if (deals.isEmpty) {
+      return const Center(
+        child: Padding(
+          padding: EdgeInsets.symmetric(horizontal: 12),
+          child: Text(
+            'Список транзакций пуст, статистика пока не доступна',
+            style: TextStyle(fontSize: 21),
+            textAlign: TextAlign.center,
+          ),
+        ),
+      );
+    }
+
     return Padding(
       padding: const EdgeInsets.only(left: 12),
       child: Column(
@@ -69,10 +82,20 @@ class StatisticsPage extends StatelessWidget {
               fontSize: 24,
             ),
           ),
-          PieChart(
-            dataMap: incomeDealsMap,
-            chartRadius: MediaQuery.sizeOf(context).height * 0.25,
-          ),
+          (incomeDealsMap.isEmpty)
+              ? const Expanded(
+                  child: Center(
+                    child: Text(
+                      'Статистика по доходам не доступна',
+                      textAlign: TextAlign.center,
+                      style: TextStyle(fontSize: 24, color: Colors.grey),
+                    ),
+                  ),
+                )
+              : PieChart(
+                  dataMap: incomeDealsMap,
+                  chartRadius: MediaQuery.sizeOf(context).height * 0.25,
+                ),
           const Text(
             'Доходы всего:',
             style: TextStyle(
@@ -92,17 +115,27 @@ class StatisticsPage extends StatelessWidget {
               ),
             ),
           ),
-          const Spacer(),
+          const SizedBox(height: 18),
           const Text(
             'Расходы по категориям:',
             style: TextStyle(
               fontSize: 24,
             ),
           ),
-          PieChart(
-            dataMap: expensesDealsMap,
-            chartRadius: MediaQuery.sizeOf(context).height * 0.25,
-          ),
+          (expensesDealsMap.isEmpty)
+              ? const Expanded(
+                  child: Center(
+                    child: Text(
+                      'Статистика по расходам не доступна',
+                      textAlign: TextAlign.center,
+                      style: TextStyle(fontSize: 24, color: Colors.grey),
+                    ),
+                  ),
+                )
+              : PieChart(
+                  dataMap: expensesDealsMap,
+                  chartRadius: MediaQuery.sizeOf(context).height * 0.25,
+                ),
           const Text(
             'Расходы всего:',
             style: TextStyle(

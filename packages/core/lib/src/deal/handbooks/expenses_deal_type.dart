@@ -16,4 +16,15 @@ enum ExpensesDealType {
       ExpensesDealType.taxi => 'Такси',
     };
   }
+
+  static ExpensesDealType toEnum(String name) {
+    return switch (name) {
+      'Кафе' => ExpensesDealType.cafe,
+      'Развлечения' => ExpensesDealType.entertainments,
+      'Для дома' => ExpensesDealType.home,
+      'Аптека' => ExpensesDealType.pharmacy,
+      'Супермаркеты' => ExpensesDealType.supermarkets,
+      _ => ExpensesDealType.taxi,
+    };
+  }
 }

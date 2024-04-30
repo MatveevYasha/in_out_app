@@ -8,4 +8,11 @@ enum IncomeDealType {
       IncomeDealType.other => 'Другое',
     };
   }
+
+  static IncomeDealType toEnum(String name) {
+    return switch (name) {
+      'Зарплата' => IncomeDealType.salary,
+      _ => IncomeDealType.other,
+    };
+  }
 }
