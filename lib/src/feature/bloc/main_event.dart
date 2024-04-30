@@ -17,3 +17,9 @@ class AddDealEvent extends MainEvent {
     required this.expensesDeal,
   });
 }
+
+class RemoveDealEvent extends MainEvent {
+  final Deal deal;
+
+  RemoveDealEvent({required this.deal});
+}

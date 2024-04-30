@@ -1,8 +1,8 @@
 import 'package:core/core.dart';
 import 'package:flutter/material.dart';
-import 'package:in_out_app/src/feature/transactions/ui/widgets/empty_transactions_page.dart';
-import 'package:in_out_app/src/feature/transactions/ui/widgets/transaction_card.dart';
-import 'package:in_out_app/src/feature/transactions/ui/widgets/transaction_month_title.dart';
+import 'package:in_out_app/src/feature/transactions/widgets/empty_transactions_page.dart';
+import 'package:in_out_app/src/feature/transactions/widgets/transaction_card.dart';
+import 'package:in_out_app/src/feature/transactions/widgets/transaction_month_title.dart';
 
 class TransactionsPage extends StatelessWidget {
   final List<Deal> deals;

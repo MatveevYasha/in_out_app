@@ -1,8 +1,8 @@
 import 'package:core/core.dart';
 import 'package:flutter/material.dart';
-import 'package:in_out_app/src/feature/statistics/ui/widgets/linear_statistics.dart';
-import 'package:in_out_app/src/feature/statistics/ui/widgets/pie_statistics.dart';
-import 'package:in_out_app/src/feature/statistics/ui/widgets/statistics_error_empty.dart';
+import 'package:in_out_app/src/feature/statistics/widgets/linear_statistics.dart';
+import 'package:in_out_app/src/feature/statistics/widgets/pie_statistics.dart';
+import 'package:in_out_app/src/feature/statistics/widgets/statistics_error_empty.dart';
 
 class StatisticsPage extends StatelessWidget {
   final List<Deal> deals;

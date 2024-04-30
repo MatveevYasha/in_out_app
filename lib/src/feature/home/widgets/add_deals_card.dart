@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:in_out_app/src/feature/home/ui/widgets/category_dialog.dart';
+import 'package:in_out_app/src/feature/home/widgets/category_dialog.dart';
 
 class AddDealsCard extends StatelessWidget {
   final int amount;

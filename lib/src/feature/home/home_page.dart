@@ -1,6 +1,6 @@
 import 'package:core/core.dart';
 import 'package:flutter/material.dart';
-import 'package:in_out_app/src/feature/home/ui/widgets/add_deals_card.dart';
+import 'package:in_out_app/src/feature/home/widgets/add_deals_card.dart';
 
 class HomePage extends StatefulWidget {
   final List<Deal> deals;

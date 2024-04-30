@@ -18,6 +18,7 @@ class MainBloc extends Bloc<MainEvent, MainState> {
       (event, emit) => switch (event) {
         final InitialMainEvent event => _initial(event, emit),
         final AddDealEvent event => _addDeal(event, emit),
+        final RemoveDealEvent event => _removeDeal(event, emit),
       },
     );
   }
@@ -104,7 +105,7 @@ class MainBloc extends Bloc<MainEvent, MainState> {
 
       if (event.incomeDeal != null) {
         incomesDealBox.put(
-          'key_${event.date}',
+          'key_${event.date.toUtc().microsecondsSinceEpoch}',
           IncomesDealDB(
             amount: event.amount,
             date: event.date.toUtc(),
@@ -115,13 +116,39 @@ class MainBloc extends Bloc<MainEvent, MainState> {
 
       if (event.expensesDeal != null) {
         expensesDealBox.put(
-          'key_${event.date}',
+          'key_${event.date.toUtc().microsecondsSinceEpoch}',
           ExpensesDealDB(
             amount: event.amount,
             date: event.date.toUtc(),
             incomeType: ExpensesDealType.toEntity(event.expensesDeal!),
           ),
         );
+      }
+
+      final List<Deal> finalDeals = _getDeals();
+
+      final totalAmount = _getTotalAmount(finalDeals);
+
+      emit(
+        SuccessMainState(
+          deals: finalDeals,
+          incomeAmount: totalAmount.incomeAmount,
+          expensesAmount: totalAmount.expensesAmount,
+        ),
+      );
+    } on Exception catch (_) {
+      emit(ErrorMainState());
+    }
+  }
+
+  void _removeDeal(RemoveDealEvent event, Emitter<MainState> emit) {
+    try {
+      if (event.deal.runtimeType == IncomeDeal) {
+        incomesDealBox.delete('key_${event.deal.date.toUtc().microsecondsSinceEpoch}');
+      }
+
+      if (event.deal.runtimeType == ExpensesDeal) {
+        expensesDealBox.delete('key_${event.deal.date.toUtc().microsecondsSinceEpoch}');
       }
 
       final List<Deal> finalDeals = _getDeals();

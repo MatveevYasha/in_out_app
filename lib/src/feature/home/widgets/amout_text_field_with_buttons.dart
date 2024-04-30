@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:in_out_app/src/feature/home/ui/widgets/amount_button.dart';
+import 'package:in_out_app/src/feature/home/widgets/amount_button.dart';
 
 class AmoutTextFieldWithButtons extends StatefulWidget {
   final TextEditingController controller;

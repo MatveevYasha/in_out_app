@@ -1,10 +1,10 @@
 import 'package:core/core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:in_out_app/src/feature/home/bloc/main_bloc.dart';
-import 'package:in_out_app/src/feature/home/bloc/main_event.dart';
-import 'package:in_out_app/src/feature/home/ui/widgets/amout_text_field_with_buttons.dart';
-import 'package:in_out_app/src/feature/home/ui/widgets/close_category_button.dart';
+import 'package:in_out_app/src/feature/bloc/main_bloc.dart';
+import 'package:in_out_app/src/feature/bloc/main_event.dart';
+import 'package:in_out_app/src/feature/home/widgets/amout_text_field_with_buttons.dart';
+import 'package:in_out_app/src/feature/home/widgets/close_category_button.dart';
 import 'package:intl/intl.dart';
 
 GlobalKey<FormState> _formKey = GlobalKey<FormState>();

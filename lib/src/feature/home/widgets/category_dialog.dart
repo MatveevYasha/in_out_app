@@ -1,7 +1,7 @@
 import 'package:core/core.dart';
 import 'package:flutter/material.dart';
-import 'package:in_out_app/src/feature/home/ui/widgets/amount_dialog.dart';
-import 'package:in_out_app/src/feature/home/ui/widgets/close_category_button.dart';
+import 'package:in_out_app/src/feature/home/widgets/amount_dialog.dart';
+import 'package:in_out_app/src/feature/home/widgets/close_category_button.dart';
 
 class CategoryDialog extends StatefulWidget {
   final String title;
