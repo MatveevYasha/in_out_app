@@ -23,3 +23,13 @@ class RemoveDealEvent extends MainEvent {
 
   RemoveDealEvent({required this.deal});
 }
+
+class AddFilterEvent extends MainEvent {
+  final DateTime? startDate;
+  final DateTime? endDate;
+
+  AddFilterEvent({
+    required this.startDate,
+    required this.endDate,
+  });
+}

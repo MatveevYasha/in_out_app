@@ -19,6 +19,7 @@ class MainBloc extends Bloc<MainEvent, MainState> {
         final InitialMainEvent event => _initial(event, emit),
         final AddDealEvent event => _addDeal(event, emit),
         final RemoveDealEvent event => _removeDeal(event, emit),
+        final AddFilterEvent event => _addFilters(event, emit),
       },
     );
   }
@@ -152,6 +153,41 @@ class MainBloc extends Bloc<MainEvent, MainState> {
       }
 
       final List<Deal> finalDeals = _getDeals();
+
+      final totalAmount = _getTotalAmount(finalDeals);
+
+      emit(
+        SuccessMainState(
+          deals: finalDeals,
+          incomeAmount: totalAmount.incomeAmount,
+          expensesAmount: totalAmount.expensesAmount,
+        ),
+      );
+    } on Exception catch (_) {
+      emit(ErrorMainState());
+    }
+  }
+
+  void _addFilters(AddFilterEvent event, Emitter<MainState> emit) {
+    try {
+      final List<Deal> deals = _getDeals();
+      List<Deal> finalDeals = [];
+
+      if (event.startDate != null && event.endDate != null) {
+        finalDeals = deals
+            .where(
+              (element) => element.date.compareTo(event.startDate!) >= 0 && element.date.compareTo(event.endDate!) <= 0,
+            )
+            .toList();
+      } else {
+        if (event.startDate != null) {
+          finalDeals = deals.where((element) => element.date.compareTo(event.startDate!) >= 0).toList();
+        }
+
+        if (event.endDate != null) {
+          finalDeals = deals.where((element) => element.date.compareTo(event.endDate!) <= 0).toList();
+        }
+      }
 
       final totalAmount = _getTotalAmount(finalDeals);
 

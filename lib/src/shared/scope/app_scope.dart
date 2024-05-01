@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:in_out_app/src/shared/scope/widgets/filter_bottom_sheet.dart';
 
 class AppScope extends StatefulWidget {
   final List<Widget> child;
@@ -20,6 +21,15 @@ class _AppScopeState extends State<AppScope> {
       appBar: AppBar(
         backgroundColor: Colors.grey[300],
         title: const Text('Бюджетный трекер - test_app'),
+        actions: [
+          IconButton(
+            onPressed: () => showModalBottomSheet<void>(
+              context: context,
+              builder: (context) => const FilterBottomSheet(),
+            ),
+            icon: const Icon(Icons.filter_alt_outlined),
+          ),
+        ],
       ),
       body: widget.child[_selectedIndex],
       bottomNavigationBar: BottomNavigationBar(
