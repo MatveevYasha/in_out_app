@@ -18,7 +18,7 @@ class AddDealsCard extends StatelessWidget {
     return DecoratedBox(
       decoration: BoxDecoration(color: color),
       child: Padding(
-        padding: const EdgeInsets.all(16),
+        padding: const EdgeInsets.only(left: 16, top: 16),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.spaceAround,
           crossAxisAlignment: CrossAxisAlignment.start,
