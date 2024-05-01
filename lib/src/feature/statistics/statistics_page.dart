@@ -68,37 +68,41 @@ class StatisticsPage extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            const Text(
-              'Доходы по категориям:',
-              style: TextStyle(
-                fontSize: 24,
+            if (incomeDealsMap.isNotEmpty) ...[
+              const Text(
+                'Доходы по категориям:',
+                style: TextStyle(
+                  fontSize: 24,
+                ),
               ),
-            ),
-            PieStatistics(
-              title: 'доход',
-              dealsMap: incomeDealsMap,
-            ),
-            LinearStatistics(
-              title: 'Доходы',
-              amountWidth: incomeAmountWidth,
-              amount: incomeAmount,
-            ),
-            const SizedBox(height: 18),
-            const Text(
-              'Расходы по категориям:',
-              style: TextStyle(
-                fontSize: 24,
+              PieStatistics(
+                title: 'доход',
+                dealsMap: incomeDealsMap,
               ),
-            ),
-            PieStatistics(
-              title: 'расход',
-              dealsMap: expensesDealsMap,
-            ),
-            LinearStatistics(
-              title: 'Расходы',
-              amountWidth: expensesAmountWidth,
-              amount: expensesAmount,
-            ),
+              LinearStatistics(
+                title: 'Доходы',
+                amountWidth: incomeAmountWidth,
+                amount: incomeAmount,
+              ),
+              const SizedBox(height: 18),
+            ],
+            if (expensesDealsMap.isNotEmpty) ...[
+              const Text(
+                'Расходы по категориям:',
+                style: TextStyle(
+                  fontSize: 24,
+                ),
+              ),
+              PieStatistics(
+                title: 'расход',
+                dealsMap: expensesDealsMap,
+              ),
+              LinearStatistics(
+                title: 'Расходы',
+                amountWidth: expensesAmountWidth,
+                amount: expensesAmount,
+              ),
+            ],
           ],
         ),
       ),
